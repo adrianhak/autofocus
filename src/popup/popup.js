@@ -46,7 +46,7 @@ resetInputBtn.addEventListener('click',() => {
 })
 
 function setEnabledStatus(status) {
-    enabledStatusEl.innerHTML = (status ? '✅ Enabled' : '❌ Disabled') + ' on this site';
+    enabledStatusEl.innerText = (status ? '✅ Enabled' : '❌ Disabled') + ' on this site';
     enabledStatusEl.style.color = status ? 'green' : 'red';
     if (status) {
         toggleSiteBtn.classList.add('menu-btn-enabled');
@@ -109,6 +109,7 @@ function toggleSite(hostname) {
             }
         } else {
             chrome.storage.sync.set({disabled: [hostname]});
+            setEnabledStatus(false);
         }
     });
 }
@@ -146,7 +147,7 @@ function showTargetExistence(targetExists) {
 function checkSiteStatus() {
     chrome.storage.sync.get('disabled',(val => {
         setEnabledStatus(!val['disabled'] ? true : val['disabled']?.indexOf(hostname) == -1);
-        if (val['disabled']?.indexOf(hostname) != -1) return;
+        if (val['disabled'] && val['disabled']?.indexOf(hostname) != -1) return;
         sendMsg({event: 'targetExists'},(targetExists) => {
             showTargetExistence(targetExists);
         });
@@ -159,9 +160,9 @@ function init() {
         checkSiteStatus();
     });
     chrome.storage.sync.get('custom',(val) => {
-        if (val['custom'][hostname]) {
+        if (val['custom']?.[hostname]) {
             resetInputBtn.classList.remove('hidden');
         }
     });
-    versionTag.innerHTML = 'v'+chrome.runtime.getManifest().version;
+    versionTag.innerText = 'v'+chrome.runtime.getManifest().version;
 }
