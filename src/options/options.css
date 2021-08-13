@@ -1,0 +1,14 @@
+.option-list {
+    padding: 0;
+    list-style:none;
+}
+
+.option-list li {
+    margin-top: 12px;
+    
+    border-top: 1px solid lightgray;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,117 @@
+body {
+    width: 180px;
+    text-align: center;
+    margin: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.hidden {
+    display: none !important;
+}
+
+p {
+    margin: 0;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 0.5rem;
+}
+
+.content p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.main-menu {
+    display: flex;
+    border-bottom: 1px lightgray solid;
+    border-top: 1px lightgray solid;
+    margin-left: -8px;
+    margin-right: -8px;
+    margin-bottom: 4px;
+}
+
+.menu-btn {
+    flex: 1;
+    border: none;
+    cursor: pointer;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: transparent;
+}
+.menu-btn:hover {
+    background-color: whitesmoke;
+}
+
+.menu-btn-enabled {
+    color: green !important;
+}
+
+#toggle-site {
+    color: red;
+}
+
+#toggle-global {
+    color: red;
+}
+
+.content-menu {
+    display: flex;
+    flex-flow: column;
+}
+
+.content-btn {
+    margin-top: 8px;
+    border: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    cursor: pointer;
+}
+
+.content-btn:hover {
+    background-color: lightgray;
+}
+
+#no-element-msg {
+    color: red;
+    background-color: #ffefef;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+#global-status {
+    color: red;
+}
+
+.content-menu {
+    margin-top: 8px;
+}
+
+#input-change-content {
+    display: flex;
+    flex-flow: column;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+}
+
+.footer a {
+    color: gray;
+}
+
+#version-tag {
+    color: lightgrey;
+}

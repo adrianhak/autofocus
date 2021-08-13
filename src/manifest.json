@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "name": "Autofocus",
+    "description": "Search faster - Puts the cursor in the search box on page load",
+    "version": "0.1",
+    "icons" : {
+        "48": "icon.svg",
+        "96": "icon.svg"
+    },
+    "permissions": ["storage","tabs"],
+    "content_scripts": [
+        {
+            "matches": ["http://*/*","https://*/*"],
+            "js": ["content_script.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "browser_action": {
+        "default_title": "Autofocus",
+        "default_popup": "popup/popup.html"
+    },
+    "options_ui": {
+        "page": "options/options.html",
+        "browser_style": true,
+        "chrome_style": true
+    },
+    "browser_specific_settings": {
+        "gecko": {
+          "id": "autofocus@adrianh.net"
+        }
+      }
+}

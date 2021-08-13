@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="./popup.css" rel="stylesheet" />
+        <script src="../lib/feather/feather.min.js"></script>
+
+    </head>
+    <body>
+        <div id="popup-content">
+            <div class="heading">
+                <img src="../icon.svg" title="Logo" class="logo">
+                <h2>Autofocus</h2>
+            </div>
+            <div id="content" class="content">
+
+
+                <div class="main-menu">
+                    <button id="toggle-site" title="Toggle for this site" class="menu-btn"><i data-feather="power"></i></button>
+                    <button id="toggle-global" title="Toggle globally" class="menu-btn"><i data-feather="globe"></i></button>
+                    <button id="options" title="Options" class="menu-btn"><i data-feather="list"></i></button>
+                </div>
+
+                <p id="enabled-status"></p>
+                <p id="global-status" class="hidden">⚠️ Disabled on all sites</p>
+
+                <div class="content-menu">
+                    <p id="no-element-msg" clas="hidden">No valid input field found</p>
+
+                    <button id="find-input" class="content-btn hidden">👀 Find input field</button>
+                    <button id="change-input" class="content-btn">🔁 Change input field</button>
+                    <button id="reset-input" title="Forget the custom selection" class="content-btn hidden">🗑 Reset to default</button>
+                </div>
+            </div>
+            <div id="input-change-content" class="hidden">
+                <p>Click on the input field you wish to autofocus</p>
+                <button id="cancel-change" class="content-btn">❌ Cancel</button>
+            </div>
+            <div class="footer">
+                <div>
+                    <p id="version"></p>
+                </div>
+                <div>
+                    <a href="https://github.com/adrianhak/autofocus">Github</a>
+                </div>
+            </div>
+        </div>
+        <div id="error-content" class="hidden">
+            <p>Can't load Autofocus for this page</p>
+        </div>
+        <script src="./popup.js"></script>
+    </body>
+</html>
