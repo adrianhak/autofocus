@@ -1,6 +1,6 @@
 <h1 align="left">
     <sub>
-    <img src="src/icon.svg" width="38px" height="38px">
+    <img src="src/img/icon.svg" width="38px" height="38px">
     </sub>
     Autofocus
 </h1>
