@@ -2,16 +2,16 @@
     "manifest_version": 2,
     "name": "Autofocus",
     "description": "Search faster - Puts the cursor in the search box on page load",
-    "version": "0.1",
+    "version": "0.1.1",
     "icons" : {
         "16": "img/icon-16.png",
         "48": "img/icon-48.png",
         "128": "img/icon-128.png"
     },
-    "permissions": ["storage","tabs"],
+    "permissions": ["storage","activeTab"],
     "content_scripts": [
         {
-            "matches": ["http://*/*","https://*/*"],
+            "matches": ["<all_urls>"],
             "js": ["content_script.js"],
             "run_at": "document_end"
         }
