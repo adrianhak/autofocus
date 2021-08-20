@@ -173,10 +173,28 @@ function isVisible(elem) {
 }
 
 // Scroll to and highlight the target element
-// TODO: Wait for scrolling to finish before highlighting target
-function highlightTarget() {
+function scrollToAndHighlight() {
     if (targetElement == null) return;
+    // If already scrolled to top, skip the scrolling step
+    if (window.scrollY == 0) {
+        highlightTarget();
+        return;
+    }
     targetElement.scrollIntoView({behavior: 'smooth',block: 'center'});
+    let scrollTimeout;
+    // The scroll event fires rapidly, recreate the timeout each time. 
+    // When scrolling has finished, timeout will trigger and highlight the target
+    addEventListener('scroll', function scrollListener (e) {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            removeEventListener('scroll',scrollListener);
+            highlightTarget();
+        }, 100);
+    });
+}
+
+// Called by scrollToAndHighlight after smooth scroll has finished
+function highlightTarget() {
     let rect = targetElement.getBoundingClientRect();
     let overlay = document.getElementById('autofocus-extension-target-overlay'); 
     if (overlay != null) {
@@ -185,7 +203,7 @@ function highlightTarget() {
         overlay = document.createElement('div');
         overlay.style.backgroundColor = 'rgba(255, 227, 105,0.5)';
         overlay.style.pointerEvents = 'none';
-        overlay.style.zIndex = 99;
+        overlay.style.zIndex = 9999;
         overlay.style.position ='absolute';
         overlay.id = 'autofocus-extension-target-overlay'
         document.body.appendChild(overlay);
@@ -247,7 +265,7 @@ chrome.runtime.onMessage.addListener(
     (message, sender, sendResponse) => {
         switch(message.event) {
             case 'highlightTarget':
-                highlightTarget();
+                scrollToAndHighlight();
                 break;
             case 'targetExists':
                 sendResponse(targetElement != null);
