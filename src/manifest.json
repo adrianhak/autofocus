@@ -8,7 +8,7 @@
         "48": "img/icon-48.png",
         "128": "img/icon-128.png"
     },
-    "permissions": ["storage","activeTab"],
+    "permissions": ["storage","activeTab","contextMenus"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
@@ -24,6 +24,9 @@
         "page": "options/options.html",
         "browser_style": true,
         "chrome_style": true
+    },
+    "background": {
+        "scripts": ["background.js"]
     },
     "browser_specific_settings": {
         "gecko": {

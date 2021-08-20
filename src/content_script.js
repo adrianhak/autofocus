@@ -1,6 +1,7 @@
 const inputTypes = ['search','text'];
 let inputEls;
 let targetElement;
+let contextMenuElement; // To be set by event listener
 
 // Check if host is blacklisted by user
 isDisabled(location.hostname,(isDisabled) => {
@@ -214,6 +215,26 @@ function setCustomMapping(targetFingerprint) {
     });
 }
 
+// Returns true if the provided element currently exists in custom mapping, false otherwise
+function isElementInCustomMap(element,callback) {
+    if (element == null) {
+        callback(false);
+        return;
+    } 
+    chrome.storage.sync.get('custom',(val) => {
+        if (!val['custom'][window.location.hostname]) {
+            callback(false);
+            return;
+        } 
+        if (findElementFromFingerprint(elementFingerprint(element)) == findElementFromFingerprint(val['custom'][window.location.hostname])) {
+            callback(true);
+            return;
+        }
+        callback(false);
+        return;
+    });
+}
+
 chrome.runtime.onMessage.addListener(
     (message, sender, sendResponse) => {
         switch(message.event) {
@@ -229,8 +250,31 @@ chrome.runtime.onMessage.addListener(
                 // Click handler is used to cancel the change event if user clicks to close popup
                 document.addEventListener('click',handleInputChange);
                 break;
+            case 'toggleContextMenuElement': // When user selects 'Toggle autofocus for this field' in context menu
+                isElementInCustomMap(contextMenuElement,(elementExists) => {
+                    if (!elementExists) {
+                        focusElement(contextMenuElement);
+                        setCustomMapping(elementFingerprint(contextMenuElement));
+                    } else {
+                        chrome.storage.sync.get('custom',(val) => {
+                            let custom = val['custom'];
+                            delete custom[window.location.hostname];
+                            chrome.storage.sync.set({custom:custom});
+                        });
+                    }
+                });
+                break;
             default:
                 console.error("Unrecognised message: ", message);
         }
     }
 );
+
+// Get the element from which the context menu was spawned within
+document.addEventListener('contextmenu',(e) => {
+    if (e.target.tagName != 'INPUT') {
+        contextMenuElement = null;
+        return;
+    };
+    contextMenuElement = e.target;
+});
