@@ -14,3 +14,13 @@ chrome.contextMenus.onClicked.addListener((info) => {
         });
     }
 });
+
+// Makes the toolbar icon dynamic by using colors to indicate current status (enabled, disabled, no element found)
+chrome.runtime.onMessage.addListener((msg,sender,sendResponse) => {
+    if (msg.event == 'setIcon') {
+        chrome.browserAction.setIcon({path: 'img/icon'+msg.payload+'-48.png'});
+    }
+});
+
+// Always default to standard icon
+chrome.browserAction.setIcon({path: 'img/icon-48.png'});

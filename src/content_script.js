@@ -5,17 +5,20 @@ let contextMenuElement; // To be set by event listener
 
 // Check if host is blacklisted by user
 isDisabled(location.hostname,(isDisabled) => {
-    if (!isDisabled) {
-        // Wait for page to fully load before accessing DOM elements
-        if (document.readyState == 'complete') {
+    if (isDisabled) {
+        // Make the toolbar icon red to inddicate that extension is disabled for this site
+        chrome.runtime.sendMessage({event:'setIcon',payload:'-red'});
+        return;
+    }
+    // Wait for page to fully load before accessing DOM elements
+    if (document.readyState == 'complete') {
+        init();
+    } else {
+        window.addEventListener('load',function load() {
+            window.removeEventListener('load',load,false);
             init();
-        } else {
-            window.addEventListener('load',function load() {
-                window.removeEventListener('load',load,false);
-                init();
-            });
-        }
-    } 
+        });
+    }
 });
 
 function init() {
@@ -111,8 +114,13 @@ function findElement() {
 
 // Switches focus on the provided element if possible and puts element in global scope
 function focusElement(element) {
-    if (element == null) return;
+    if (element == null) {
+        // Set the toolbar icon to yellow to indicate that extension is enabled, but no element was found
+        chrome.runtime.sendMessage({event: 'setIcon', payload: '-yellow'});
+        return;
+    }
     targetElement = element;
+    chrome.runtime.sendMessage({event: 'setIcon',payload: ''});
     targetElement.focus();
 }
 
@@ -222,7 +230,7 @@ function isElementInCustomMap(element,callback) {
         return;
     } 
     chrome.storage.sync.get('custom',(val) => {
-        if (!val['custom'][window.location.hostname]) {
+        if (!val['custom'] || !val['custom'][window.location.hostname]) {
             callback(false);
             return;
         } 
