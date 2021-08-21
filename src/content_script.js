@@ -2,6 +2,7 @@ const inputTypes = ['search','text'];
 let inputEls;
 let targetElement;
 let contextMenuElement; // To be set by event listener
+let retryCount = 0;
 
 // Check if host is blacklisted by user
 isDisabled(location.hostname,(isDisabled) => {
@@ -14,15 +15,28 @@ isDisabled(location.hostname,(isDisabled) => {
     if (document.readyState == 'complete') {
         init();
     } else {
-        window.addEventListener('load',function load() {
-            window.removeEventListener('load',load,false);
+        window.addEventListener('DOMContentLoaded',function domLoaded() {
+            window.removeEventListener('DOMContentLoaded',domLoaded,false);
             init();
+        });
+        window.addEventListener('load', function load() {
+            window.removeEventListener('load',load,false);
+            // Refocus element if focus changed between DOMContentLoaded & load (see https://reddit.com)
+            if (targetElement && document.activeElement != targetElement) {
+                focusElement(targetElement);
+            }
         });
     }
 });
 
 function init() {
     inputEls = [...document.getElementsByTagName('input')];
+    // If no elements were found, try again in case DOM wasn't fully loaded (see https://justwatch.com)
+    if (inputEls.length == 0 && retryCount < 3) {
+        retryCount++;
+        setTimeout(() => init(),100);
+        return;
+    }
     // First find out if user has a custom mapping for this hostname
     searchMappings('custom',(element) => {
         if (element == null) {

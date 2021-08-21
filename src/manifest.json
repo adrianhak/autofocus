@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Autofocus",
     "description": "Search faster - Puts the cursor in the search box on page load",
-    "version": "0.1.1",
+    "version": "0.2",
     "icons" : {
         "16": "img/icon-16.png",
         "48": "img/icon-48.png",
@@ -13,7 +13,7 @@
         {
             "matches": ["<all_urls>"],
             "js": ["content_script.js"],
-            "run_at": "document_end"
+            "run_at": "document_start"
         }
     ],
     "browser_action": {
